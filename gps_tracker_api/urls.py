@@ -18,5 +18,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('gps-footprint', include('gps_api.urls'))
+    path('api-auth/', include('rest_framework.urls')),
+    path('gps-footprint/', include('gps_api.urls'))
 ]
