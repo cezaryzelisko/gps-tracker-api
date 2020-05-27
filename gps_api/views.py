@@ -1,7 +1,20 @@
-from django.http import HttpResponse
-from django.views.decorators.csrf import ensure_csrf_cookie
+from rest_framework import viewsets
+
+from .models import GPSFootprint, Device
+from .serializers import GPSFootprintSerializer, DeviceSerializer
 
 
-@ensure_csrf_cookie
-def index(request):
-    return HttpResponse('GPS footprint received!')
+class DeviceViewSet(viewsets.ModelViewSet):
+    queryset = Device.objects.all()
+    serializer_class = DeviceSerializer
+
+    def get_queryset(self):
+        return Device.objects.filter(user=self.request.user)
+
+
+class GPSFootprintViewSet(viewsets.ModelViewSet):
+    queryset = GPSFootprint.objects.all()
+    serializer_class = GPSFootprintSerializer
+
+    def get_queryset(self):
+        return GPSFootprint.objects.filter(device_id__user=self.request.user)
