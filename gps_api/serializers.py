@@ -4,6 +4,7 @@ from .models import GPSFootprint, Device
 
 
 class DeviceSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
     gps_footprints = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
