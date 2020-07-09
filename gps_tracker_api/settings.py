@@ -26,7 +26,11 @@ SECRET_KEY = '*mdu%ct_e4=j@cfswd0^5#36-t7r(to+)ncje%0vre2$f(htfi'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '192.168.1.101',
+    '192.168.1.102',
+    '127.0.0.1',
+]
 
 # Application definition
 
