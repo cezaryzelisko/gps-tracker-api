@@ -6,7 +6,7 @@ email: cezary.zelisko@gmail.com
 
 ## Description
 Part of the GPS Tracker project. For more information visit this
-[link](https://github.com/cezaryzelisko/gps-tracker).
+[link](https://github.com/cezaryzelisko/gps_tracker).
 
 ## Install
 In order to install `gps_tracker_api` package you should install all Python requirements.
@@ -24,7 +24,9 @@ They are collected in the `requirements.txt` file so to install them at once:
 on the `PYTHONPATH`),
 
 ## Test
-TODO
+In order to run all tests issue this command from the project directory:
+
+```python3 manage.py test```
 
 ## Run
 GPS Tracker API server can be run with the following command (remember to navigate to the
