@@ -13,7 +13,7 @@ class CustomJWTTests(TestCase):
         self.client = APIClient()
 
     def test_can_obtain_custom_token(self):
-        res = self.get_access_token()
+        res = self.get_access_token_response()
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertIn('access', res.data)
@@ -22,7 +22,7 @@ class CustomJWTTests(TestCase):
         self.assertIn('refreshExpiresAt', res.data)
 
     def test_can_refresh_custom_token(self):
-        access_res = self.get_access_token()
+        access_res = self.get_access_token_response()
 
         refresh_res = self.client.post(REFRESH_TOKEN_URL, {'refresh': access_res.data['refresh']})
 
@@ -30,7 +30,7 @@ class CustomJWTTests(TestCase):
         self.assertIn('access', refresh_res.data)
         self.assertIn('accessExpiresAt', refresh_res.data)
 
-    def get_access_token(self):
+    def get_access_token_response(self):
         credentials = {
             'username': 'testuser',
             'password': 'testpass123'
