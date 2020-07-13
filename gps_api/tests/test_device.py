@@ -115,8 +115,9 @@ class PublicDeviceTests(TestCase):
 
     def test_patch_device(self):
         device = self.create_device('testdevice')
+        patch_data = {'name': 'patcheddevice'}
 
-        res = self.client.patch(get_device_detail_url(device.pk))
+        res = self.client.patch(get_device_detail_url(device.pk), patch_data)
 
         updated_device = Device.objects.filter(id=device.pk)[0]
 
