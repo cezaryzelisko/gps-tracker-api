@@ -9,7 +9,7 @@ class DeviceViewSet(viewsets.ModelViewSet):
     serializer_class = DeviceSerializer
 
     def get_queryset(self):
-        return Device.objects.filter(user=self.request.user)
+        return self.queryset.filter(user=self.request.user)
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -20,4 +20,11 @@ class GPSFootprintViewSet(viewsets.ModelViewSet):
     serializer_class = GPSFootprintSerializer
 
     def get_queryset(self):
-        return GPSFootprint.objects.filter(device_id__user=self.request.user)
+        queryset = self.queryset.filter(device_id__user=self.request.user)
+
+        if 'start_date' in self.request.query_params:
+            queryset = queryset.filter(published_at__gte=self.request.query_params['start_date'])
+        if 'end_date' in self.request.query_params:
+            queryset = queryset.filter(published_at__lt=self.request.query_params['end_date'])
+
+        return queryset

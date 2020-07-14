@@ -143,7 +143,7 @@ class PublicGPSFootprintTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
-    def test_patch_gps_footprint(self):
+    def test_can_patch_gps_footprint(self):
         gps_footprint = self.create_gps_footprint(51.01, 21.01)
         patch_data = {'lat': 52.01}
 
@@ -153,3 +153,25 @@ class PublicGPSFootprintTests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data['lat'], updated_device.lat)
+
+    def test_can_filter_gps_footprints_by_date(self):
+        gps_footprint1 = self.create_gps_footprint(51.01, 21.01, timezone.make_aware(timezone.datetime(2020, 1, 1)))
+        gps_footprint2 = self.create_gps_footprint(51.02, 21.02, timezone.make_aware(timezone.datetime(2020, 2, 1)))
+        gps_footprint3 = self.create_gps_footprint(51.03, 21.03, timezone.make_aware(timezone.datetime(2020, 3, 1)))
+
+        serializer1 = GPSFootprintSerializer(gps_footprint1)
+        serializer2 = GPSFootprintSerializer(gps_footprint2)
+        serializer3 = GPSFootprintSerializer(gps_footprint3)
+
+        res = self.client.get(
+            GPS_FOOTPRINT_LIST_URL,
+            {
+                'start_date': timezone.make_aware(timezone.datetime(2020, 2, 1)),
+                'end_date': timezone.make_aware(timezone.datetime(2020, 2, 21))
+            }
+        )
+
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertNotIn(serializer1.data, res.data)
+        self.assertIn(serializer2.data, res.data)
+        self.assertNotIn(serializer3.data, res.data)
